@@ -1,0 +1,43 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}班级管理-教师教学辅助系统{% endblock %}
+{% block custom_bread %}
+<section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="/user/home/">个人中心</a>></li>
+                <li>我的班级</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+    <div class="right" >
+            <div class="personal_des permessage">
+
+                <div class="companycenter">
+                    <div class="group_list brief">
+                        {% for class1 in all_class.object_list %}
+                        <div class="module1_5 box">
+                            <a href="{% url 'users:apply_class' class1.id %}">
+                                <img width="214" height="190" src="{{ MEDIA_URL }}{{ class1.image }}"/>
+                            </a>
+                            <div class="des">
+                                <a href="{% url 'users:apply_class' class1.id %}"><h2>班级号：{{ class1.class_id }}</h2></a>
+                                <span class="fl">年级：<i class="key">{{ class1.grade }}</i></span>
+                                <span class="fl">专业：<i class="key">{{ class1.profession }}</i></span>
+                            </div>
+
+                            <div class="bottom">
+                                <span class="fl">所在院：{{ class1.yard }}</span>
+                                <span class="delete-group fr jsDeleteFav_course" data-favid="12"></span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <a href="{% url 'users:manage_class' %}">添加班级</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

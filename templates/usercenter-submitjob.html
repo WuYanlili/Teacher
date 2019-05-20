@@ -1,0 +1,108 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}作业提交-教师教学辅助系统{% endblock %}
+{% block custom_bread %}
+<section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+                <li>作业提交</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+{#    <script type="text/javascript">#}
+{#        function ProcessFile(e) {#}
+{#            var file = document.getElementById('file').files[0];#}
+{#            if (file) {#}
+{#                var reader = new FileReader();#}
+{#                reader.onload = function (event) {#}
+{#                    var txt = event.target.result;#}
+{##}
+{#                    var img = document.createElement("img");#}
+{#                    img.src = txt;//将图片base64字符串赋值给img的src#}
+{#                   // console.log(txt);#}
+{#                    document.getElementById("result").appendChild(img);#}
+{#                };#}
+{#            }#}
+{#            reader.readAsDataURL(file);#}
+{#        }#}
+{##}
+{#        function contentLoaded() {#}
+{#            document.getElementById('file').addEventListener('change',#}
+{#                ProcessFile, false);#}
+{#        }#}
+{##}
+{#        window.addEventListener("DOMContentLoaded", contentLoaded, false);#}
+{#    </script>#}
+<div id="result"></div>
+        <form action="{% url 'users:upload_job' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            <input type="file" id="file" name="file"/>
+            作业描述:<input type="text" name="job_desc" placeholder="写出作业描述">
+        <input type="submit" value="上传">
+    </form>
+    <h3>历史提交作业</h3>
+    {% for job in all_job.object_list %}
+         <img width="400" height="500" class="js-img-show" id="avatarShow" src="{{ MEDIA_URL }}{{ job.job }}" style="float: left;margin-right: 20px"/>
+        <div style="float: left;width: 550px;">
+        <ul class="mod-post" id="comment-list">
+                            <li class="post-row">
+                                <div class="media">
+                                    <span target="_blank"><img src='{{ MEDIA_URL }}{{ request.user.image }}' width='40' height='40' /></span>
+                                </div>
+                                <div class="bd">
+                                    <div class="tit">
+                                        <span target="_blank">{{ job.upload_time }}</span>
+                                    </div>
+                                    <p class="cnt">{{ job.job_desc }}</p>
+                                    </div>
+                            <li class="post-row">
+                            </li>
+                        </ul>
+{#        <span>{{ job.upload_time }}</span>#}
+{#        <span>{{ job.job_desc }}</span>#}
+{#        <span>{{ job.review_teacher }}</span>#}
+{#        <span>{{ job.review }}</span>#}
+        </div>
+        <span style="float: left;width: 550px;">
+        <ul class="mod-post" id="comment-list">
+<li class="post-row">
+                            <div class="media">
+                                    <span target="_blank">我是教师</span>
+                                </div>
+                                <div class="bd">
+                                    <div class="tit">
+                                        <span target="_blank">点评教师：{{ job.review_teacher|default_if_none:'' }}</span>
+                                    </div>
+                                    <p class="cnt">点评内容：{{ job.review|default_if_none:'' }}</p>
+                                    </div>
+                            </li>
+        </ul>
+        </span>
+    {% endfor %}
+    <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if all_job.has_previous %}
+                                <li class="long"><a href="?{{ all_job.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in all_job.pages %}
+                                {% if page %}
+                                    {% ifequal page all_job.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_job.has_next %}
+                                <li class="long"><a href="?{{ all_job.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+{% endblock %}

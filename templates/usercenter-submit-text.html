@@ -1,0 +1,19 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}作业提交-教师教学辅助系统{% endblock %}
+{% block custom_bread %}
+<section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+                <li>作业提交</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+    <span class="fileinput-button">
+            <span>上传</span>
+            <input type="file">
+        </span>
+{% endblock %}

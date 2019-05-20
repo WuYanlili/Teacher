@@ -1,0 +1,78 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}我的问题-教师教学辅助系统{% endblock %}
+{% block custom_bread %}
+<section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+                <li>我的问题</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+    <div style="float: right;margin-right: 150px">
+                    <div id="js-pub-container" class="issques clearfix js-form" >
+                        <form method="post" action="{% url 'users:submit_questions' %}">
+                        <div class="wgt-ipt-wrap pub-editor-wrap " id="js-pl-input-fake">
+                            <textarea id="js-pl-textarea" class="" placeholder="写出你的问题！" name="ask"></textarea>
+                        </div>
+                        <button type="submit" class="pub-btn" data-cid="452">发表问题</button>
+                        <p class="global-errortip js-global-error"></p>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+                    <div id="course_note">
+                        <ul class="mod-post" id="comment-list">
+                            {% for comments in all_comments.object_list %}
+                            <li class="post-row">
+                                <div class="media">
+                                    <span target="_blank"><img src='{{ MEDIA_URL }}{{ request.user.image }}' width='40' height='40' /></span>
+                                </div>
+                                <div class="bd">
+                                    <div class="tit">
+                                        <span target="_blank">{{ request.user.nick_name }}</span>
+                                    </div>
+                                    <p class="cnt">{{ comments.ask }}</p>
+                                    </div>
+                            <li class="post-row">
+                            <div class="media">
+                                    <span target="_blank">我是教师</span>
+                                </div>
+                                <div class="bd">
+                                    <div class="tit">
+                                        <span target="_blank">回答教师：{{ comments.question_teacher|default_if_none:'' }}</span>
+                                    </div>
+                                    <p class="cnt">教师回答：{{ comments.qusetion|default_if_none:'' }}</p>
+                                    </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+    <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if all_comments.has_previous %}
+                                <li class="long"><a href="?{{ all_comments.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in all_comments.pages %}
+                                {% if page %}
+                                    {% ifequal page all_comments.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_comments.has_next %}
+                                <li class="long"><a href="?{{ all_comments.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                    </div>
+
+    </div>
+{% endblock %}

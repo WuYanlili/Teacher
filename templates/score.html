@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}成绩 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+    <section>
+	<div class="wp">
+		<div class="crumbs">
+			<ul>
+				<li><a href="{% url 'index' %}">首页</a>></li>
+				<li>成绩:{{ sc }}</li>
+			</ul>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block content %}
+{% endblock %}
+{% block custom_js %}
+
+<script>
+
+
+</script>
+{% endblock %}

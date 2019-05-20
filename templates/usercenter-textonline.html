@@ -1,0 +1,54 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}在线测评-教师教学辅助系统{% endblock %}
+{% block custom_bread %}
+<section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+                <li>在线测评</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+    <div style="float: right;margin-right: 150px">
+                    <div id="course_note" style="margin-right: 250px">
+                        <ul class="mod-post" id="comment-list">
+                            {% for text in all_text.object_list %}
+                            <li class="post-row">
+
+                                <div class="bd">
+                                    <div class="tit">
+                                        <a href="{{ text.line }}"  target="_blank">{{ text.text }}</a>
+                                    </div>
+                                    </div>
+
+                            {% endfor %}
+                        </ul>
+                        <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if all_text.has_previous %}
+                                <li class="long"><a href="?{{ all_text.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in all_text.pages %}
+                                {% if page %}
+                                    {% ifequal page all_text.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_text.has_next %}
+                                <li class="long"><a href="?{{ all_text.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                    </div>
+    </div>
+{% endblock %}

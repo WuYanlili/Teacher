@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}真题讲解 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+    <section>
+	<div class="wp">
+		<div class="crumbs">
+			<ul>
+				<li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'questions:question_list' %}">公开课程</a>></li>
+				<li><a href="#">{{ question.course }}</a>></li>
+                <li>{{ question.video_name }}</li>
+			</ul>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block custom_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/muke/base.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/muke/common-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/muke/course/learn-less.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/aui.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mooc.css' %}" />
+     <link rel="stylesheet" type="text/css" href="{% static 'css/muke/course/common-less.css' %}">
+     <link href="https://vjs.zencdn.net/7.5.4/video-js.css" rel="stylesheet">
+    <style>
+    .video-js .vjs-big-play-button{
+        top: 50%;
+        left: 50%;
+    }
+    </style>
+{% endblock %}
+{% block custom_js %}
+
+  <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+{% endblock %}
+{% block content %}
+    <div id="main">
+    <div style="width: 1200px;height: 675px;margin-left: 170px">
+        <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="1200"
+        poster='http://video-js.zencoder.com/oceans-clip.png' data-setup='{}'>
+        <source src='{{ question.url }}' type='video/mp4'>
+        </video>
+    </div>
+    </div>
+{% endblock %}
+

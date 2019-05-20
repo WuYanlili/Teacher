@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}真题讲解 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li>真题讲解</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+<section>
+	<div class="wp">
+		<div class="list" style="margin-top:0;">
+			<div class="left layout">
+				<div class="head">
+					<ul class="tab_header">
+						<li class="active"><a href="?order=">最新 </a></li>
+					</ul>
+				</div>
+                <div id="inWindow">
+                    <div class="tab_cont " id="content">
+					<div class="group_list">
+                        {% for question in all_questions.object_list %}
+                            <div class="box">
+                            <a href="{% url 'questions:question_detail' question.id %}">
+                                    <img width="280" height="350" class="scrollLoading" src="{{ MEDIA_URL }}{{ question.image }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="{% url 'questions:question_detail' question.id %}">
+
+                                        <h2>{{ question.course }}</h2>
+
+                                    </a>
+                                    <span class="fl">年份：<i class="key">{{ question.name }}</i></span>
+                                    <span class="fr">套数：{{ question.unit }}&nbsp;&nbsp;</span>
+
+                                </div>
+                                <div class="bottom">
+
+                                    <a href="{% url 'questions:question_detail' question.id %}"><span class="fl">{{ question.add_time}}</span></a>
+                                    <span class="f1">添加时间</span>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+					</div>
+                    <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if all_questions.has_previous %}
+                                <li class="long"><a href="?{{ all_questions.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in all_questions.pages %}
+                                {% if page %}
+                                    {% ifequal page all_questions.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_questions.has_next %}
+                                <li class="long"><a href="?{{ all_questions.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+				</div>
+                </div>
+			</div>
+			<div class="right layout">
+				<div class="head">热门课程推荐</div>
+				<div class="group_recommend">
+                    {% for hot_course in hot_courses %}
+                    <dl>
+						<dt>
+							<a target="_blank" href="{{ ecmall_ad.url }}">
+								<img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ hot_course.image }}"/>
+							</a>
+						</dt>
+						<dd>
+							<a target="_blank" href="{{ ecmall_ad.url }}"><h2> {{ hot_course.name }}</h2></a>
+							<span class="fl">难度：<i class="key">{{ hot_course.get_degree_display }}</i></span>
+						</dd>
+					</dl>
+                    {% endfor %}
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endblock %}

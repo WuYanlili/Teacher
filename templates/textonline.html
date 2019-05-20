@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}在线测试 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_bread %}
+    <section>
+	<div class="wp">
+		<div class="crumbs">
+			<ul>
+				<li><a href="{% url 'index' %}">首页</a>></li>
+				<li>在线测试</li>
+			</ul>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block content %}
+    <div style="margin-left: 200px">
+    <form action="{% url 'exam:student_exam' %}" method="post">
+    <div style="margin: 0px 0px 20px 30px">
+        {% for question in all_question.object_list %}
+            <div style="margin: 10px 0">
+                <h3 name="question" style="font-size: 20px;font-family:  '微软雅黑'">{{ question.questionID }}:{{ question.title }}</h3>
+                <label style="width: 100px;text-align: right;line-height: 1.5 ;margin-left: 30px" >请输入答案：</label><input type="text" id="stuAnswer{{ question.id }}" name="stuAnswer" required="required"><br>
+                <input type="text" style="display: none; " name="id" value="{{ question.id }}">
+                <input style="display: none;margin-left: 97px;" disabled="true" type="text" id="answer{{ question.id }}" value="{{ question.standardAnswer }}">
+                <input type="button" id="button{{ question.id }}"  onclick="getAnswer({{ question.id }})" value="查看答案">
+                <input type="hidden" value="-1" id="hidden{{ question.id }}">
+            </div>
+        {% endfor %}
+            <input type="submit" value="提交" id="submit_button"  onclick="submit_ans({{ count }})">
+            <input type="text" name="lists" value="" id="list" hidden>
+    </div>
+        <div class="pageturn">
+                        <ul class="pagelist">
+                            {% if all_question.has_previous %}
+                                <li class="long"><a href="?{{ all_question.previous_page_number.querystring }}">上一页</a></li>
+                            {% endif %}
+
+                            {% for page in all_question.pages %}
+                                {% if page %}
+                                    {% ifequal page all_question.number %}
+                                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                    {% else %}
+                                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                    {% endifequal %}
+                                {% else %}
+                                    <li class="none"><a href="">...</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if all_question.has_next %}
+                                <li class="long"><a href="?{{ all_question.next_page_number.querystring }}">下一页</a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+    </div>
+
+    {% csrf_token %}
+    </form>
+{% endblock %}
+{% block custom_js %}
+
+<script>
+    function submit_ans(sum) {
+        var lists = new Array(sum);
+
+        {#var sum_ = 0;#}
+        // 1. 获取所有 hidden* 的值：-1 代表没做 0/1 表示答案的正确性
+        for (var i=1; i<=sum; i++){
+            id = "hidden"+i;
+            judge = document.getElementById(id).value;
+
+            if (judge== '1'){
+                lists[i]=1;
+            }else {
+                lists[i]=0;
+            }
+        }
+
+        list = lists.toString();
+        document.getElementById("list").value=list;
+        console.log(list)
+        alert(list)
+        // 2. 将所有值填入 list 中
+
+        // 3. 使用 ajax 发送。
+
+
+
+    }
+
+    function getAnswer(index){
+        id = "stuAnswer"+index
+        stuAnswer1 = document.getElementById(id).value;
+
+        id = "answer"+index;
+        true_ans = document.getElementById(id);
+        true_ans.style.display="block";
+        true_ans_value = true_ans.value;
+
+        id = "button"+index;
+        button = document.getElementById(id).disabled=true;
+
+        id = "hidden"+index;
+        hide_input = document.getElementById(id);
+        var value = 0;
+        if (true_ans_value == stuAnswer1){
+            value = 1
+        }
+        hide_input.value = value;
+    }
+</script>
+{% endblock %}
+
+

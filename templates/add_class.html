@@ -1,0 +1,72 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}班级管理-教师教学辅助系统{% endblock %}
+{% block custom_bread %}
+<section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="/user/home/">个人中心</a>></li>
+                <li>我的班级</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+    <div class="right">
+		<div class="personal_des ">
+			<div class="head" style="border:1px solid #eaeaea;">
+				<h1>班级信息</h1>
+			</div>
+			<div class="inforcon">
+
+            <form class="clearfix"  enctype="multipart/form-data" autocomplete="off" method="post" action="{% url 'users:add_class_head' %}" target='frameFile'>
+                        <label class="changearea" for="avatarUp">
+                            <span id="avatardiv" class="pic">
+                                <img width="400" height="300" class="js-img-show" id="avatarShow" src="{{ MEDIA_URL }}{{ request.classs.image }}" name="img"/>
+                            </span>
+                            <span class="fl upload-inp-box" style="margin-left:70px;">
+                                <button class="btn-green btn-w100" type="submit" >上传图片</button>
+                                <input type="file" name="image" id="avatarUp" class="js-img-up"/>
+                            </span>
+                        </label>
+                        {% csrf_token %}
+                    </form>
+
+				<form  name="apply_class" method="post"  action="{% url 'users:add_class' %}">
+					<ul class="right">
+						<li>班&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：
+                           <input type="text" name="class_id" id="nick_name"  maxlength="15" placeholder="请输入班级号" value="{{ addclass_from.class_id.value }}">
+                            <i class="error-tips"></i>
+                        </li>
+						<li>院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：
+                           <input type="text" id="nick_name" name="yard"  maxlength="20" placeholder="请输入所属院校" value="{{ addclass_from.yard.value }}"/>
+                            <i class="error-tips"></i>
+						</li>
+						<li>专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业：
+							<input type="text" id="nick_name" name="profession"  maxlength="20" placeholder="请输入班级专业" value="{{ addclass_from.profession.value }}"/>
+                            <i class="error-tips"></i>
+						</li>
+                    <li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：
+                        <input type="text" id="nick_name" name="grade"  maxlength="20" placeholder="请输入所属年级" value="{{ addclass_from.grade.value }}"/>
+                            <i class="error-tips"></i>
+						</li>
+						<li class="p_infor_city">班&nbsp;&nbsp;级&nbsp;&nbsp;公&nbsp;&nbsp;告：
+                            <input type="text" name="class_info" id="address"  maxlength="500" placeholder="请输入班级公告" value="{{ addclass_from.class_info.value }}" >
+						    <i class="error-tips"></i>
+                        </li>
+
+						<li class="button heibtn">
+							<input type="submit"  value="添加班级" onclick="alert('添加班级成功')">
+						</li>
+                    {% for error in addclass_from.errors.items %}:
+                        {{ error }}
+                    {% endfor %}
+                        {{ msg }}
+					</ul>
+                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                {% csrf_token %}
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

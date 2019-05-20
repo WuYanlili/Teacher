@@ -1,0 +1,68 @@
+{% extends 'usercenter-base.html' %}
+{% block title %}修改班级-教师教学辅助系统{% endblock %}
+{% block custom_bread %}
+<section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="/user/home/">个人中心</a>></li>
+                <li>班级信息</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block right_content %}
+    <div class="right">
+		<div class="personal_des ">
+			<div class="head" style="border:1px solid #eaeaea;">
+				<h1>班级信息</h1>
+			</div>
+			<div class="inforcon">
+
+            <form class="clearfix" id="jsAvatarForm" enctype="multipart/form-data" autocomplete="off" method="post"  target='frameFile'>
+                        <label class="changearea" for="avatarUp">
+                            <span id="avatardiv" class="pic">
+                                <img width="400" height="300" class="js-img-show" id="avatarShow" style="margin-left: 250px;margin-top: 10px" src="{{ MEDIA_URL }}{{ classs.image }}"/>
+                            </span>
+
+                        </label>
+                        {% csrf_token %}
+                    </form>
+
+				<form class="perinform" id="jsEditUserForm" autocomplete="off" name="apply_class" method="post">
+					<ul class="right">
+						<li>班&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：
+                           <input type="text" name="class_id" id="nick_name" value="{{ classs.class_id }}" maxlength="15">
+                            <i class="error-tips"></i>
+                        </li>
+						<li>院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：
+                           <input type="text" id="birth_day" name="yard" value="{{ classs.yard }}" readonly="readonly"/>
+                            <i class="error-tips"></i>
+						</li>
+						<li>专&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;业：
+							<input type="text" id="birth_day" name="profession" value="{{ classs.profession }}" readonly="readonly"/>
+                            <i class="error-tips"></i>
+						</li>
+                    <li>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;级：
+                        <input type="text" id="birth_day" name="grade" value="{{ classs.grade }}" readonly="readonly"/>
+                            <i class="error-tips"></i>
+						</li>
+						<li class="p_infor_city">班&nbsp;&nbsp;级&nbsp;&nbsp;公&nbsp;&nbsp;告：
+                            <input type="text" name="class_info" id="address"  value="{{ classs.class_info }}" maxlength="500">
+						    <i class="error-tips"></i>
+                        </li>
+                        <script>
+
+                        </script>
+						<li class="button heibtn">
+							<a href="" id="applyclassbtn" onclick="alert('修改班级成功！')">修改班级</a>
+						</li>
+
+					</ul>
+                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                {% csrf_token %}
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}
