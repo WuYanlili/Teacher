@@ -24,6 +24,52 @@
                 <div id="inWindow">
                     <div class="tab_cont " id="content">
 					<div class="group_list">
+                    {% if request.user.status == 'teacher' %}
+                        {% for question in all_questions.object_list %}
+                            <div class="box">
+                            <a href="{% url 'questions:question_detail' question.id %}">
+                                    <img width="280" height="350" class="scrollLoading" src="{{ MEDIA_URL }}{{ question.image }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="{% url 'questions:question_detail' question.id %}">
+
+                                        <h2>{{ question.course }}</h2>
+
+                                    </a>
+                                    <span class="fl">年份：<i class="key">{{ question.name }}</i></span>
+                                    <span class="fr">套数：{{ question.unit }}&nbsp;&nbsp;</span>
+
+                                </div>
+                                <div class="bottom">
+
+                                    <a href="{% url 'questions:question_detail' question.id %}"><span class="fl">{{ question.add_time}}</span></a>
+                                    <a href="{% url 'questions:delete_question' question.id %}"><span class="delete-group fr jsDeleteFav_course" data-favid="确定删除该真题讲解？"></span></a>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="box">
+                            <a href="{% url 'questions:add_question' %}">
+                                    <img width="280" height="350" class="scrollLoading" src="/static/images/add_class.jpg"/>
+                                </a>
+                                <div class="des">
+                                    <a href="">
+
+                                        <h2>添加课程</h2>
+
+                                    </a>
+                                    <span class="fl">年份：<i class="key"></i></span>
+                                    <span class="fr">&nbsp;&nbsp;</span>
+
+                                </div>
+                                <div class="bottom">
+
+                                    <a href="{% url 'questions:add_question' %}"><span class="fl"></span></a>
+                                    <span class="f1">添加时间</span>
+
+                                </div>
+                            </div>
+                    {% else %}
                         {% for question in all_questions.object_list %}
                             <div class="box">
                             <a href="{% url 'questions:question_detail' question.id %}">
@@ -47,6 +93,8 @@
                                 </div>
                             </div>
                         {% endfor %}
+                    {% endif %}
+
 
 
 					</div>
@@ -79,18 +127,19 @@
 			<div class="right layout">
 				<div class="head">热门课程推荐</div>
 				<div class="group_recommend">
-                    {% for hot_course in hot_courses %}
+                    {% for question in all_question %}
                     <dl>
 						<dt>
-							<a target="_blank" href="{{ ecmall_ad.url }}">
-								<img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ hot_course.image }}"/>
+							<a target="_blank" href="{{ question.url }}">
+								<img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ question.image }}"/>
 							</a>
 						</dt>
 						<dd>
-							<a target="_blank" href="{{ ecmall_ad.url }}"><h2> {{ hot_course.name }}</h2></a>
-							<span class="fl">难度：<i class="key">{{ hot_course.get_degree_display }}</i></span>
+							<a target="_blank" href="{{ question.url }}"><h2> {{ question.course }}</h2></a>
+							<span class="fl">难度：<i class="key">{{ question.degree }}</i></span>
 						</dd>
 					</dl>
+
                     {% endfor %}
 
 

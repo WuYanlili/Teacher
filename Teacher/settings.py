@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'questions',
     'uploadjob',
     'exam',
+    'operation',
 ]
 AUTH_USER_MODEL = "users.UserProfile"
 

@@ -37,5 +37,7 @@ urlpatterns = [
     url(r'^users/', include('users.urls',namespace="users")),
     url(r'^questions/', include('questions.urls',namespace="questions")),
     url(r'^exam/', include('exam.urls',namespace="exam")),
+    url(r'^class/', include('classs.urls',namespace="class")),
+    url(r'^operation/', include('operation.urls',namespace="operation")),
 
 ]

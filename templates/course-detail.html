@@ -47,6 +47,7 @@
 						<div class="btns">
 
                                 <div class="buy btn"><a style="color: white" href="{% url 'questions:question_video' question.id %}">开始学习</a></div>
+                            {% if request.user.status == "teacher" %}<div class="buy btn"><a style="color: white" href="{% url 'questions:alter_question' question.id %}">修改课程</a></div>{% endif %}
 						</div>
 					</div>
                     <div class="group-share-box">
@@ -80,7 +81,7 @@
                     </a>
 					<div class="btn  notlogin
 					     "data-favid="14" id="jsRightBtn">
-                        查看
+                        修改
                     </div>
 					<div class="clear">
 						<ul>

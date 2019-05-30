@@ -3,7 +3,7 @@ __author__ = 'wuyanli'
 
 import xadmin
 
-from .models import ClassRoom, StudentManagement, AskQuestion
+from .models import ClassRoom,AskQuestion,StudentManagement
 
 
 class ClassRoomAdmin(object):

@@ -82,15 +82,22 @@
 					<div class="wp">
 						<ul>
 							<li ><a href="{% url 'index' %}">首页</a></li>
-							<li>
-								<a href="{% url 'exam:student_exam' %}">
+							<li>{% if request.user.status == 'teacher' %}
+                                <a href="{% url 'operation:paperlist' %}">
+									录入题库<img class="hot" src="{% static 'images/nav_hot.png' %}">
+								</a>
+                                {% else %}
+								<a href="{% url 'operation:paperlist' %}">
 									在线测试<img class="hot" src="{% static 'images/nav_hot.png' %}">
 								</a>
+                                {% endif %}
 							</li>
 							<li>
 								<a href="{% url 'questions:question_list' %}">真题讲解</a>
 							</li>
-							<li><a href="{% url 'users:user_info' %}">个人中心</a></li>
+							<li>{% if request.user.status == 'teacher' %}
+                                <a href="{% url 'class:student_manage' %}">学生管理</a>
+							{% else %}<a href="{% url 'operation:check_score' request.user.id %}">历史成绩</a>{% endif %}</li>
 						</ul>
 					</div>
 				</div>

@@ -6,37 +6,55 @@
             <ul  class="crumbs">
                 <li><a href="{% url 'index' %}">首页</a>></li>
                 <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
-                <li>作业提交</li>
+                <li>{% if request.user.status == 'teacher' %}查看作业{% else %}作业提交{% endif %}</li>
             </ul>
         </div>
     </section>
 {% endblock %}
 {% block right_content %}
-{#    <script type="text/javascript">#}
-{#        function ProcessFile(e) {#}
-{#            var file = document.getElementById('file').files[0];#}
-{#            if (file) {#}
-{#                var reader = new FileReader();#}
-{#                reader.onload = function (event) {#}
-{#                    var txt = event.target.result;#}
-{##}
-{#                    var img = document.createElement("img");#}
-{#                    img.src = txt;//将图片base64字符串赋值给img的src#}
-{#                   // console.log(txt);#}
-{#                    document.getElementById("result").appendChild(img);#}
-{#                };#}
-{#            }#}
-{#            reader.readAsDataURL(file);#}
-{#        }#}
-{##}
-{#        function contentLoaded() {#}
-{#            document.getElementById('file').addEventListener('change',#}
-{#                ProcessFile, false);#}
-{#        }#}
-{##}
-{#        window.addEventListener("DOMContentLoaded", contentLoaded, false);#}
-{#    </script>#}
 <div id="result"></div>
+    {% if request.user.status == 'teacher' %}
+        {% for job in all_job.object_list %}
+         <img width="400" height="500" class="js-img-show" id="avatarShow" src="{{ MEDIA_URL }}{{ job.job }}" style="float: left;margin-right: 20px"/>
+        <div style="float: left;width: 550px;">
+        <ul class="mod-post" id="comment-list">
+                            <li class="post-row">
+                                <div class="media">
+                                    <span target="_blank">我是学生</span>
+                                </div>
+                                <div class="bd">
+                                    <div class="tit">
+                                        <span target="_blank">用户名：{{ job.job_student }}||上传时间：{{ job.upload_time }}</span>
+                                    </div>
+                                    <p class="cnt">{{ job.job_desc }}</p>
+                                    </div>
+                            <li class="post-row">
+                            </li>
+                        </ul>
+        </div>
+        <span style="float: left;width: 550px;">
+        <ul class="mod-post" id="comment-list">
+<li class="post-row">
+                            <div class="media">
+                                    <span target="_blank">{% ifequal null job.review_teacher %}我是教师{% else %}
+
+                                    <img src='{{ MEDIA_URL }}{{ request.user.image }}' width='40' height='40' />{% endifequal %}</span>
+                                </div>
+                                <div class="bd">
+                                    <div class="tit">
+                                        <span target="_blank">点评教师：{{ job.review_teacher|default_if_none:'' }}</span>
+                                    </div>
+                                <form action="{% url 'users:review' job.id %}" method="post">
+                                    教师点评：<input class="cnt" name="review" style="width: 250px" value="{{ job.review|default_if_none:'' }}"/>
+                                    <input type="submit"  class="pub-btn" style="float: right;width: 80px;text-align: center" value=" {% ifequal null job.review %}点评{% else %}修改点评{% endifequal %}">
+                                {% csrf_token %}
+                                </form>
+                                </div>
+                            </li>
+        </ul>
+        </span>
+    {% endfor %}
+    {% else %}
         <form action="{% url 'users:upload_job' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
             <input type="file" id="file" name="file"/>
@@ -56,15 +74,15 @@
                                     <div class="tit">
                                         <span target="_blank">{{ job.upload_time }}</span>
                                     </div>
-                                    <p class="cnt">{{ job.job_desc }}</p>
+                                <form action="{% url 'users:job_desc' job.id %}" method="post">
+                                    作业描述：<input class="cnt" name="job_desc" style="width: 250px" value="{{ job.job_desc|default_if_none:'' }}"/>
+                                    <input type="submit"  class="pub-btn" style="float: right;width: 80px;text-align: center" value=" {% ifequal null job.job_desc %}作业描述{% else %}修改描述{% endifequal %}">
+                                {% csrf_token %}
+                                </form>
                                     </div>
                             <li class="post-row">
                             </li>
                         </ul>
-{#        <span>{{ job.upload_time }}</span>#}
-{#        <span>{{ job.job_desc }}</span>#}
-{#        <span>{{ job.review_teacher }}</span>#}
-{#        <span>{{ job.review }}</span>#}
         </div>
         <span style="float: left;width: 550px;">
         <ul class="mod-post" id="comment-list">
@@ -82,6 +100,7 @@
         </ul>
         </span>
     {% endfor %}
+    {% endif %}
     <div class="pageturn">
                         <ul class="pagelist">
                             {% if all_job.has_previous %}

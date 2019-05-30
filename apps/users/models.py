@@ -10,14 +10,15 @@ from django.contrib.auth.models import AbstractUser
 
 
 class UserProfile(AbstractUser):
-    nick_name = models.CharField(max_length=50,verbose_name=u"昵称",default="")
+    nick_name = models.CharField(max_length=50,verbose_name=u"昵称",default="",null=True,blank=True)
     birday = models.DateField(verbose_name=u"生日",null=True,blank=True)
     gender = models.CharField(max_length=10, choices=(("male",u"男"),("female","女")),default="female")
-    address = models.CharField(max_length=100,default=u"")
+    address = models.CharField(max_length=100,default=u"",null=True,blank=True)
     mobile = models.CharField(max_length=11,null=True,blank=True)
-    image = models.ImageField(upload_to="image/%Y/%m",default=u"image/default.png",max_length=100)
+    image = models.ImageField(upload_to="image/%Y/%m",default=u"image/default.png",max_length=100,null=True,blank=True)
     status = models.CharField(max_length=10,choices=(("teacher",u"老师"),("student",u"学生")), default="student")
     classroom = models.CharField(max_length=20,verbose_name=u"班级号",default="0")
+    studentId = models.CharField(max_length=10,verbose_name=u"学号",default="0")
 
     class Meta:
         verbose_name = "用户信息"

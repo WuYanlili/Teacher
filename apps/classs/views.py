@@ -14,17 +14,17 @@ from users.models import UserProfile
 
 class MyClass(View):
     def get(self,request):
-        all_class = ClassRoom.objects.all()
+        all_class = ClassRoom.objects.all().order_by("class_id")
         status = request.user.status
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
 
-        p = Paginator(all_class, 4, request=request)
+        p = Paginator(all_class, 3, request=request)
         class1 = p.page(page)
         if status=="teacher":
-            return render(request, "teacher_class_detail.html", {"all_class": class1})
+            return render(request, "usercenter-my-class.html", {"all_class": class1})
         else:
             id = request.user.classroom
             if request.user.classroom=='0':
@@ -50,33 +50,43 @@ class ApplyClass(View):
             classs = ClassRoom.objects.get(id=int(class_id))
             return render(request, 'class-detail.html', {"classs":classs})
 
-
+'''
+修改班级
+'''
 class ModifyClass(View):
     def get(self, request,class_id):
         classs = ClassRoom.objects.get(id=int(class_id))
         return render(request, 'modify-class.html', {"classs": classs})
+    def post(self,request,class_id):
+        classs = ClassRoom.objects.get(id=int(class_id))
+        print classs
+        classs.class_id = request.POST.get("class_id","")
+        classs.grade = request.POST.get("grade","")
+        classs.yard = request.POST.get("yard","")
+        classs.profession = request.POST.get("profession","")
+        classs.class_info = request.POST.get("class_info","")
+        print request.POST.get("class_info","")
+        classs.save()
+        all_class = ClassRoom.objects.all().order_by("class_id")
+        return render(request, "usercenter-my-class.html", {"all_class":all_class})
+
+'''
+教师删除班级
+'''
+class DeleteClass(View):
+    def get(self,request,class_id):
+        ClassRoom.objects.filter(class_id=class_id).delete()
+        all_class = ClassRoom.objects.all().order_by("class_id")
+        return render(request,"usercenter-my-class.html",{"all_class":all_class})
     def post(self,request):
-        addclass_from = AddClassForm(request.POST)
-        if addclass_from.is_valid():
-            class_id1 = request.POST.get("class_id", "")
-            yard1 = request.POST.get("yard", "")
-            class_info1 = request.POST.get("class_info", "")
-            grade1 = request.POST.get("grade", "")
-            profession1 = request.POST.get("profession", "")
-            # img = Img(img_url=request.FILES.get('img'))
-            class_room = ClassRoom()
-            class_room.class_id = class_id1
-            class_room.yard = yard1
-            class_room.class_info = class_info1
-            class_room.grade = grade1
-            class_room.profession = profession1
-            # class_room.image = image_form
-            class_room.save()
-            return render(request, "teacher_class_detail.html")
-        else:
-            return render(request, "teacher_class_detail.html", {"addclass_form": addclass_from})
+        all_class = ClassRoom.objects.all().order_by("class_id")
+        return render(request,"usercenter-my-class.html",{"all_class":all_class})
 
 
+
+'''
+学生进入班级
+'''
 class InterClass(View):
     def get(self,request,class_id):
         classs = ClassRoom.objects.get(id=int(class_id))
@@ -91,45 +101,24 @@ class InterClass(View):
         return render(request, 'class-detail.html', {"classs":classs})
 
 
-class AddClassView(View):
-    '''进入添加班级界面'''
-    def get(self, request):
-        addclass_from= AddClassForm()
 
-        return render(request, "add_class.html", {})
 
 '''
     添加班级
 '''
 class Addclass(View):
 
+    def get(self,request):
+        return render(request,"add_class.html")
     def post(self, request):
-        addclass_from= AddClassForm(request.POST)
-        yard1 = request.POST.get("yard", "")
-        class_id1 = request.POST.get("class_id", "")
-        class_info1 = request.POST.get("class_info", "")
-        grade1 = request.POST.get("grade", "")
-        profession1 = request.POST.get("profession", "")
-        if addclass_from.is_valid():
-            class_id1 = request.POST.get("class_id","")
-            if ClassRoom.objects.filter(class_id=class_id1):
-                return render(request, "add_class.html", {"addclass_from": addclass_from, "msg": "该班级已经存在"})
-            yard1 = request.POST.get("yard", "")
-            class_info1 = request.POST.get("class_info","")
-            grade1 = request.POST.get("grade","")
-            profession1 = request.POST.get("profession","")
-            # img = Img(img_url=request.FILES.get('img'))
-            class_room = ClassRoom()
-            class_room.class_id = class_id1
-            class_room.yard = yard1
-            class_room.class_info = class_info1
-            class_room.grade = grade1
-            class_room.profession = profession1
-            # class_room.image = image_form
-            class_room.save()
-            return render(request, "teacher_class_detail.html")
-        else:
-            return render(request, "teacher_class_detail.html",{"addclass_form": addclass_from})
+        class_id = request.POST.get("class_id","")
+        yard = request.POST.get("yard","")
+        profession = request.POST.get("profession","")
+        grade = request.POST.get("grade","")
+        class_info = request.POST.get("class_info","")
+        ClassRoom.objects.create(class_id=class_id,yard=yard,profession=profession,grade=grade,class_info=class_info)
+        all_class = ClassRoom.objects.all().order_by("class_id")
+        return render(request,"usercenter-my-class.html",{"all_class":all_class})
 
 '''
 提出问题
@@ -151,25 +140,101 @@ class MyQuestion(LoginRequiredMixin, View):
 
 
     def post(self, request):
-        askquestionfrom = AskQuestionForm(request.POST)
         ask = request.POST.get("ask", "")
         if not request.user.is_authenticated():
             #判断用户登录状态
             return HttpResponse('{"status":"fail", "msg":"用户未登录"}', content_type='application/json')
-
-        askquestionfrom = AskQuestionForm(request.POST)
         ask = request.POST.get("ask", "")
         ask_student = self.request.user
         askquestion = AskQuestion()
         askquestion.ask = ask
         askquestion.ask_student = ask_student
         askquestion.save()
-        # return HttpResponse('{"status":"success", "msg":"添加成功"}', content_type='application/json')
-        return render(request, "usercenter-myquestion.html")
+        all_comments = AskQuestion.objects.all().order_by("-id")
+        return render(request, "usercenter-myquestion.html",{
+            "all_comments": all_comments
+        })
 
 
+'''
+教师回答修改问题
+'''
+class AnswerQuestionView(View):
+    def get(self,request):
+        return render(request,"usercenter-my-class.html")
+
+    def post(self,request,question_id):
+        answer = request.POST.get("answer","")
+        question = AskQuestion.objects.get(id=question_id)
+        question.question_teacher = request.user
+        question.qusetion = answer
+        question.save()
+        all_comments = AskQuestion.objects.all().order_by("-id")
+        return render(request,"usercenter-myquestion.html",{"all_comments":all_comments})
 
 
+'''
+学生修改问题内容
+'''
+class UpdateAskView(View):
+    def post(self,request,ask_id):
+        ask = request.POST.get("ask","")
+        AskQuestion.objects.filter(id=ask_id).update(ask=ask)
+        all_comments = AskQuestion.objects.all().order_by("-id")
+        return render(request, "usercenter-myquestion.html", {"all_comments": all_comments})
 
 
+'''
+学生管理
+'''
+class StudentManageView(View):
+    def get(self,request):
+        students = UserProfile.objects.filter(status='student')
+        sts = StudentManagement.objects.all().order_by("student_id")
+        return render(request,"student_management.html",{"students":students,
+                                                        "sts":sts })
 
+
+'''
+查看学生信息
+'''
+class CheckAtudentInfoView(View):
+    def get(self,request,student_id):
+        stmanage = StudentManagement.objects.get(id = student_id)
+        student = stmanage.student_info
+        print student
+        return render(request,"student_info.html",{"student":student})
+    def post(self,request,student_id):
+        classroom = request.POST.get("classroom","")
+        st_id = request.POST.get("student_id","")
+        mobile = request.POST.get("mobile","")
+        # address = request.POST.get("address","")
+        gender = request.POST.get("gender","")
+        # birday = request.POST.get("birday","")
+        # nick_name = request.POST.get("nick_name","")
+        user = UserProfile.objects.get(id=int(student_id))
+        student = StudentManagement.objects.get(student_info=user)
+        print user,classroom,st_id,mobile,student_id
+        print user.is_authenticated()
+        user.classroom = classroom
+        user.studentId = st_id
+        user.mobile = mobile
+        # user.address = address
+        user.gender = gender
+        # user.birday = birday
+        # user.nick_name = nick_name
+        user.save()
+        student.student_id = st_id
+        student.save()
+        sts = StudentManagement.objects.all().order_by("student_id")
+        return render(request,"student_management.html",{"sts":sts })
+
+
+'''
+删除学生
+'''
+class DeleteStudentView(View):
+    def get(self,request,student_id):
+        StudentManagement.objects.filter(id=student_id).delete()
+        sts = StudentManagement.objects.all().order_by("student_id")
+        return render(request, "student_management.html", {"sts": sts})

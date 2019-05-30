@@ -13,7 +13,7 @@ class ClassRoom(models.Model):
     class_info = models.CharField(verbose_name=u"班级公告", null=True, blank=True, max_length=500)
     grade = models.CharField(verbose_name=u"年级", max_length=10)
     profession = models.CharField(verbose_name=u"专业", max_length=10)
-    image = models.ImageField(upload_to="image/%Y/%m",default=u"image/default.png",max_length=100)
+    image = models.ImageField(upload_to="image/%Y/%m",default=u"image/2019/04/6.jpg",max_length=100)
 
     class Meta:
         verbose_name = "班级信息"
