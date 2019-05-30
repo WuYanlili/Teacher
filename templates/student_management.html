@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}学生管理 - 教师教学辅助系统{% endblock %}
+
+{% load staticfiles %}
+{% block custom_css %}
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block custom_bread %}
+    <section>
+	<div class="wp">
+		<div class="crumbs">
+			<ul>
+				<li><a href="{% url 'index' %}">首页</a>></li>
+                <li>学生管理</li>
+			</ul>
+		</div>
+	</div>
+</section>
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped" style="width: 800px;margin: 10px 250px">
+    <thead style="text-align: center">
+    <tr style="font-size: 22px">
+        <th>班级</th>
+        <th>学号</th>
+        <th>学生信息</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody style="text-align: center;font-size: 18px">
+        {% for st in sts %}
+    <tr>
+        <td><a href="{% url 'users:modify_class' st.classroom.id %}">{{ st.classroom }}</a></td>
+        <td><a href="{% url 'class:student_info' st.id %}">{{ st.student_id }}</a></td>
+        <td><a href="{% url 'operation:check_student_score' st.id %}">{{ st.student_info }}</a></td>
+
+        <td style="text-align: center"><div style="margin-bottom:15px">
+                <a href="{% url 'class:delete_student' st.id %}" class="btn btn-info" type="submit">删除学生</a>
+            </div></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+{% block custom_js %}
+
+
+{% endblock %}

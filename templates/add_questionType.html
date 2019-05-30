@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}录入题库 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_css %}
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'operation:paperlist' %}">录入题库</a>></li>
+                <li>添加题库类型</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+			<div class="inforcon" style="height: 450px">
+
+<h3 style="margin-left: 480px;">添加题库类型</h3>
+				<form class="form-horizontal" role="form" method="post" style="width: 600px;margin: 0 auto" action="{% url 'operation:add_questionType' %}">
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">科目名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入科目名" name="course" >
+                          </div>
+                        </div>
+                <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">科目说明</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入科目说明" name="desc" >
+                          </div>
+                        </div>
+
+                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                        <button type="submit" class="btn btn-primary" style="display: block;margin: 0 auto">添加题目类型</button>
+                {% csrf_token %}
+				</form>
+			</div>
+{% endblock %}
+{% block custom_js %}
+    <link href="/static/js/bootstrap.js" type="text/javascript" rel="stylesheet" />
+{% endblock %}

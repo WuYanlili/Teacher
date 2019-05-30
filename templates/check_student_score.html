@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}学生管理 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_css %}
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                {% if request.user.status == 'teacher' %}
+                <li><a href="{% url 'class:student_manage' %}">学生管理</a>></li>
+                <li>学生成绩</li>{% else %}<li>查看成绩</li>{% endif %}
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+			<div class="inforcon" style="height: 500px">
+{% if request.user.status == 'teacher' %}
+<h3 style="margin-left: 750px;">学生成绩</h3>
+            {% else %}
+            <h3 style="margin-left: 750px;">查看成绩</h3>
+            {% endif %}
+				 <table class="table table-striped" style="width: 800px;margin: 10px 350px;">
+    <thead style="text-align: center">
+    <tr style="font-size: 22px">
+        <th>试卷</th>
+        <th>用户</th>
+        <th>考试时间</th>
+        <th>成绩</th>
+    </tr>
+    </thead>
+    <tbody style="text-align: center;font-size: 18px">
+        {% for score in userscore %}
+    <tr>
+{#    查看该类型试卷下的题目#}
+        <td>{{ score.paper }}</td>
+        <td>{{ score.nickname }}</td>
+        <td>{{ score.add_time }}</td>
+
+        <td style="text-align: center">{{ score.total }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+			</div>
+{% endblock %}
+{% block custom_js %}
+    <link href="/static/js/bootstrap.js" type="text/javascript" rel="stylesheet" />
+{% endblock %}

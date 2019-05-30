@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}真题讲解 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_css %}
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'operation:paperlist' %}">录入题库</a>></li>
+                <li>修改题目</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+			<div class="inforcon">
+
+<h3 style="margin-left: 480px;">修改题目</h3>
+				<form class="form-horizontal" role="form" method="post" style="width: 600px;margin: 0 auto" action="#">
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">科目名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入科目名称" name="course" value="{{ question.course }}">
+                          </div>
+                        </div>
+                <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label" >题目类型</label>
+                        <div style="margin-top: 4px">
+                    <div class="radio-custom radio-primary" style="float:left;margin-left: 20px">
+                        <input type="radio" name="questionType" {% if question.questionType == "xz" %} checked="checked" {% endif %} value="xz">
+                            <label style="width:70px;">选择题</label>
+                    </div>
+                    <div class="radio-custom radio-primary" style="float:left;">
+                        <input type="radio" name="questionType" {% if question.questionType == "pd" %} checked="checked" {% endif %} value="pd">
+                        <label style="width:70px;">判断题</label>
+                    </div>
+                    <div class="radio-custom radio-primary" style="float:left;">
+                        <input type="radio" name="questionType" {% if question.questionType == "mxz" %} checked="checked" {% endif %} value="mxz">
+                        <label>多选题</label>
+                    </div>
+                    </div>
+                        </div>
+                <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">分值</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入分值" name="score" value="{{ question.score }}">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">题目内容</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入题目内容" name="content" value="{{ question.content }}">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">正确答案</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入正确答案" name="answer" value="{{ question.answer }}">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">选项A</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入A项内容"  name="choice_a" value="{{ question.choice_a }}">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">选项B</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入选项B内容" name="choice_b" value="{{ question.choice_b }}">
+                          </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">选项C</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入选项C内容" name="choice_c" value="{{ question.choice_c }}">
+                          </div>
+                        </div>
+                <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">选项D</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入选项D内容" name="choice_d" value="{{ question.choice_d }}">
+                          </div>
+                        </div>
+                <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">选项E</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入选项E内容" name="choice_e" value="{{ question.choice_e }}">
+                          </div>
+                        </div>
+                <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">选项F</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入选项F内容" name="choice_f" value="{{ question.choice_f }}">
+                          </div>
+                        </div>
+
+                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                        <button type="submit" class="btn btn-primary" style="display: block;margin: 0 auto">修改题目</button>
+                {% csrf_token %}
+				</form>
+			</div>
+{% endblock %}
+{% block custom_js %}
+    <link href="/static/js/bootstrap.js" type="text/javascript" rel="stylesheet" />
+{% endblock %}

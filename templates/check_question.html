@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}真题讲解 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_css %}
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'operation:paperlist' %}">录入题库</a>></li>
+                <li>查看题库</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+			<div class="inforcon">
+
+<h3 style="margin-left: 600px;">查看题库</h3>
+				 <table class="table table-striped" style="width: 1000px;margin: 10px 250px">
+    <thead style="text-align: center">
+    <tr style="font-size: 22px">
+        <th>题目</th>
+        <th>题型</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody style="text-align: center;font-size: 18px">
+        {% for question in questions %}
+    <tr>
+{#    查看该类型试卷下的题目#}
+        <td><a href="{% url 'operation:alter_question' question.id %}">{{ question.content }}</a></td>
+        <td><a href="{% url 'operation:alter_question' question.id %}">{{ question.questionType }}</a></td>
+        <td><a href="{% url 'operation:alter_question' question.id %}">{{ question.add_time }}</a></td>
+
+        <td style="text-align: center"><div style="margin-bottom:15px">
+                <a href="{% url 'operation:delete_question' question.id %}" class="btn btn-info" type="submit">删除题目</a>
+            </div></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+			</div>
+{% endblock %}
+{% block custom_js %}
+    <link href="/static/js/bootstrap.js" type="text/javascript" rel="stylesheet" />
+{% endblock %}

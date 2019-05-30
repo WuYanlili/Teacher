@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}试卷列表{% endblock %}
+
+{% block css %}
+
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+<link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+            <style>
+
+        #box1 {
+            width: 600px;
+            margin: 90px auto;
+        }
+        #box1 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        #box2 {
+            width: 250px;
+            margin: 20px auto;
+        }
+        #box2 p {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+       #mydef {
+            text-align: center;
+        }
+        .score {
+            font-size: 50px;
+            color: #3c8dbc;
+        }
+    </style>
+
+
+
+{#    <div class="begin"><p>成功进入试题页面</p></div>#}
+{#        <div id="box1">#}
+{#            {% for i in papers %}#}
+{#                <p>试卷名称：<a href="{% url 'paper' i.id %}">{{ i.name }}</a></p>#}
+{#            {% endfor %}#}
+{#        </div>#}
+
+
+
+{% if request.user.status == 'teacher' %}
+    <div style="height: 600px">
+    <table class="table table-striped" style="width: 800px;margin: 10px 350px">
+    <thead style="text-align: center">
+    <tr style="font-size: 22px">
+        <th>科目名</th>
+        <th>科目说明</th>
+        <th>添加时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody style="text-align: center;font-size: 18px">
+        {% for course in courses %}
+    <tr>
+{#    查看该类型试卷下的题目#}
+        <td><a href="{% url 'operation:check_question' course.id %}">{{ course.name }}</a></td>
+        <td><a href="{% url 'operation:check_question' course.id %}">{{ course.decs }}</a></td>
+        <td><a href="{% url 'operation:check_question' course.id %}">{{ course.add_time }}</a></td>
+
+        <td style="text-align: center"><div style="margin-bottom:15px">
+                <a href="{% url 'operation:add_question' course.id %}" class="btn btn-info" type="submit">添加题目</a>
+            </div></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+    <a href="{% url 'operation:add_questionType' %}" style="font-size: 18px;margin-left: 700px;margin-top: 100px">添加题库类型</a>
+
+</div>
+    {% else %}
+                <section class="content-header">
+
+<div id="mydef">
+    <h1 class="score">试卷列表</h1>
+
+</div>
+        </section>
+
+        <div id="box1">
+    <div id="box2">
+      <a   href="{% url 'operation:select' %}">
+    <input class="btn btn-green"   value="随机抽题  " />
+      </a>
+</div>
+            <div id="box2">
+      <a   href="{% url 'operation:train' %}">
+    <input class="btn btn-green"   value="我要训练  " />
+      </a>
+</div>
+    </div>
+    </section>
+    <p>选择题库</p>
+
+
+{% endif %}
+{% endblock %}

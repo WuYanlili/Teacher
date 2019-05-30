@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}真题讲解 - 教师教学辅助系统{% endblock %}
+{% load staticfiles %}
+{% block custom_css %}
+        <link href="/static/css/bootstrap.css" type="text/css" rel="stylesheet" />
+{% endblock %}
+{% block custom_bread %}
+    <section>
+        <div class="wp">
+            <ul  class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'questions:question_list' %}">真题讲解</a>></li>
+                <li>添加真题</li>
+            </ul>
+        </div>
+    </section>
+{% endblock %}
+{% block content %}
+			<div class="inforcon">
+
+            <form class="clearfix"  enctype="multipart/form-data" autocomplete="off" method="post" action="#" target='frameFile'>
+                        <label class="changearea" for="avatarUp" style="margin: 0 480px">
+                            <span id="avatardiv" class="pic">
+                                <img width="600" height="400" class="js-img-show" id="avatarShow" src="/static/img/bg-img/b1.jpg" name="img"/>
+                            </span>
+                        </label>
+                        {% csrf_token %}
+                    </form>
+<h3 style="margin-left: 480px;">添加真题</h3>
+				<form class="form-horizontal" role="form" method="post" style="width: 600px;margin: 0 auto" action="{% url 'questions:add_question' %}">
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">科目名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入真题的科目名称" name="course">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">真题年份</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入真题的年份" name="name">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">套数</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入为真题的第几套" name="unit">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">课程描述</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入对该课程的描述" name="desc">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">视频名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入视频名称" name="video_name">
+                          </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">访问地址</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入视频访问地址" name="url">
+                          </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">课程类别</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入课程类别" name="category">
+                          </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">课程标签</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入课程标签" name="tag">
+                          </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">课程须知</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入课程须知" name="youneed_know">
+                          </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">老师告诉你</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="请输入老师告诉你" name="teacher_tell">
+                          </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label" >难度</label>
+                        <div style="margin-top: 4px">
+                    <div class="radio-custom radio-primary" style="float:left;margin-left: 20px">
+                        <input type="radio" name="degree" checked="checked" value="cj">
+                            <label style="width:70px;">初级</label>
+                    </div>
+                    <div class="radio-custom radio-primary" style="float:left;">
+                        <input type="radio" name="degree" value="zj">
+                        <label style="width:70px;">中级</label>
+                    </div>
+                    <div class="radio-custom radio-primary" style="float:left;">
+                        <input type="radio" name="degree" value="gj">
+                        <label>高级</label>
+                    </div>
+                    </div>
+                        </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">上传资料</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="file-loading" id="txt_file" placeholder="上传课程相关资料" name="tag">
+                          </div>
+                        </div>
+                    <input type='hidden' name='csrfmiddlewaretoken' value='799Y6iPeEDNSGvrTu3noBrO4MBLv6enY' />
+                        <button type="submit" class="btn btn-primary" style="display: block;margin: 0 auto">添加真题</button>
+                {% csrf_token %}
+				</form>
+			</div>
+{% endblock %}
+{% block custom_js %}
+    <link href="/static/js/bootstrap.js" type="text/javascript" rel="stylesheet" />
+{% endblock %}
